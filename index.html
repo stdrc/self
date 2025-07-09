@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>(i)stdrc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crete+Round:wght@400&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
         * {
@@ -16,7 +21,7 @@
         :root {
             --primary-color: #000000;
             --secondary-color: #171717;
-            --text-light: #525252;
+            --text-light: #454545;
             --bg-color: #ffffff;
             --shadow: 2px 2px 0px #000000;
             --shadow-hover: 6px 6px 0px #000000;
@@ -42,14 +47,16 @@
         }
 
         .header h1 {
+            font-family: 'Crete Round', serif;
             font-size: 2.2rem;
-            font-weight: 900;
+            font-weight: 400;
             color: var(--primary-color);
             margin-bottom: 1rem;
             letter-spacing: -0.02em;
         }
 
         .intro {
+            font-family: 'Roboto', sans-serif;
             font-size: 1rem;
             color: var(--text-light);
             margin: 0 0 2rem;
@@ -63,6 +70,7 @@
         }
 
         .section h2 {
+            font-family: 'Montserrat', sans-serif;
             font-size: 1.1rem;
             color: var(--primary-color);
             margin-bottom: 1rem;
@@ -70,7 +78,7 @@
             position: relative;
             padding-bottom: 0.3rem;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.08em;
         }
 
         .section h2::after {
@@ -127,10 +135,11 @@
         }
 
         .card h3 {
+            font-family: 'Roboto', sans-serif;
             color: var(--primary-color);
             margin-bottom: 0.5rem;
             font-size: 1.1rem;
-            font-weight: 700;
+            font-weight: 500;
         }
 
         .card h3:only-child {
@@ -138,6 +147,7 @@
         }
 
         .card p {
+            font-family: 'Roboto', sans-serif;
             color: var(--text-light);
             margin-bottom: 0;
             font-size: 0.85rem;
@@ -166,8 +176,8 @@
         }
 
         .humanity-icon {
-            width: 20px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             stroke: var(--primary-color);
             flex-shrink: 0;
             display: flex;

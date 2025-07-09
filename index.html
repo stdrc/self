@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(i)stdrc</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #171717;
+            --text-light: #525252;
+            --bg-color: #ffffff;
+            --shadow: 2px 2px 0px #000000;
+            --shadow-hover: 6px 6px 0px #000000;
+            --humanity-bar-bg: #e0e0e0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-color);
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 5rem 1.5rem 3rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .intro {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin: 0 0 2rem;
+            line-height: 1.6;
+            text-align: left;
+            word-break: break-word;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section h2 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .card {
+            background: var(--bg-color);
+            border-radius: 0;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            gap: 1.5rem;
+            cursor: pointer;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.02) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .card h3:only-child {
+            margin-bottom: 0;
+        }
+
+        .card p {
+            color: var(--text-light);
+            margin-bottom: 0;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .humanity-rating {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            margin: 0;
+            flex-shrink: 0;
+            align-items: flex-end;
+        }
+
+        .humanity-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            position: relative;
+        }
+
+        .humanity-icon {
+            width: 20px;
+            height: 16px;
+            stroke: var(--primary-color);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .humanity-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .humanity-bar {
+            width: 50px;
+            height: 3px;
+            background-color: var(--humanity-bar-bg);
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        .humanity-fill {
+            height: 100%;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform-origin: left;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 3rem 1rem 2rem;
+                max-width: 100%;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .intro {
+                font-size: 1rem;
+            }
+
+            .card {
+                padding: 1.2rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .humanity-rating {
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .intro {
+                font-size: 1rem;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>(i)stdrc</h1>
+            <p class="intro">system programmer, vibe coder, Rust & C++ lover, beginner in song-writing and philosophy
+            </p>
+        </header>
+
+        <div id="sections-container">
+            <!-- Sections will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Section Template -->
+    <template id="section-template">
+        <section class="section">
+            <h2 class="section-title"></h2>
+            <div class="grid section-grid">
+                <!-- Cards will be populated dynamically -->
+            </div>
+        </section>
+    </template>
+
+    <!-- Card Template -->
+    <template id="card-template">
+        <div class="card">
+            <div class="card-content">
+                <h3 class="card-title"></h3>
+                <p class="card-description"></p>
+            </div>
+            <div class="humanity-rating">
+                <!-- Humanity items will be populated dynamically -->
+            </div>
+        </div>
+    </template>
+
+    <!-- Humanity Item Template -->
+    <template id="humanity-item-template">
+        <div class="humanity-item">
+            <i class="humanity-icon"></i>
+            <div class="humanity-bar">
+                <div class="humanity-fill"></div>
+            </div>
+        </div>
+    </template>
+
+
+    <script>
+        // 数据结构
+        const portfolioData = {
+            sections: [
+                {
+                    title: "Social Media",
+                    items: [
+                        {
+                            title: "GitHub",
+                            linkUrl: "https://github.com/stdrc",
+                        },
+                        {
+                            title: "LinkedIn",
+                            linkUrl: "https://www.linkedin.com/in/stdrc/",
+                        },
+                        {
+                            title: "Twitter / X",
+                            linkUrl: "https://x.com/istdrc",
+                        },
+                        {
+                            title: "Bilibili",
+                            linkUrl: "https://space.bilibili.com/3735172",
+                        },
+                    ]
+                },
+                {
+                    title: "Content",
+                    items: [
+                        {
+                            title: "Project RC",
+                            description: "My tech blog, sharing my programming experience, technical thinking and project insights.",
+                            linkUrl: "https://stdrc.cc",
+                            humanity: [
+                                { label: "Product/UI/UX", value: 100 },
+                                { label: "Code", value: 100 },
+                                { label: "Content", value: 100 },
+                            ]
+                        },
+                        {
+                            title: "阿西读书",
+                            description: "Sharing my reading thoughts and book excerpts.",
+                            linkUrl: "https://book.stdrc.cc",
+                            humanity: [
+                                { label: "Product/UI/UX", value: 80 },
+                                { label: "Code", value: 1 },
+                                { label: "Content", value: 100 },
+                            ]
+                        },
+                        {
+                            title: "阿西锐评",
+                            description: "Sharing my thoughts on movies, shows, galleries and more.",
+                            linkUrl: "https://reviews.stdrc.cc",
+                            humanity: [
+                                { label: "Product/UI/UX", value: 100 },
+                                { label: "Content", value: 100 },
+                            ]
+                        },
+                        {
+                            title: "RC's Music Collection",
+                            description: "Sharing my music collection.",
+                            linkUrl: "https://music.stdrc.cc",
+                            humanity: [
+                                { label: "Product/UI/UX", value: 85 },
+                                { label: "Code", value: 1 },
+                                { label: "Content", value: 100 },
+                            ]
+                        },
+                    ]
+                },
+                {
+                    title: "Contributions",
+                    items: [
+                        {
+                            title: "RisingWave",
+                            description: "An open source PostgreSQL-compatible database optimized for incrementally maintaining materialized views on streaming data.",
+                            linkUrl: "https://github.com/risingwavelabs/risingwave",
+                            humanity: [
+                                { label: "Code", value: 98 },
+                            ]
+                        },
+                        {
+                            title: "Arrow UDF",
+                            description: "A User-Defined Function Framework for Apache Arrow.",
+                            linkUrl: "https://github.com/arrow-udf/arrow-udf",
+                            humanity: [
+                                { label: "Code", value: 100 },
+                            ]
+                        },
+                    ]
+                },
+                {
+                    title: "Talks / Trainings",
+                    items: [
+                        {
+                            title: "从零开始使用 LaTeX 排版论文",
+                            description: "SJTU 图书馆专题培训讲座：从零开始使用 LaTeX 排版（毕业）论文。",
+                            linkUrl: "https://www.bilibili.com/video/BV1Z24y157GM",
+                            humanity: [
+                                { label: "Content", value: 100 }
+                            ],
+                        },
+                        {
+                            title: "Modern CMake by Example",
+                            description: "A step-by-step tutorial talk given at Institute of Parallel and Distributed Systems, teaching new-coming master students and PhD candidates how to use CMake.",
+                            linkUrl: "https://github.com/stdrc/modern-cmake-by-example",
+                            humanity: [
+                                { label: "Content", value: 100 }
+                            ],
+                        },
+                        {
+                            title: "Why Write OS In Rust?",
+                            description: "A talk given at Institute of Parallel and Distributed Systems, sharing Rust features that can benefit OS development.",
+                            linkUrl: "https://www.bilibili.com/video/BV1tP4y1x7h7",
+                            humanity: [
+                                { label: "Content", value: 100 }
+                            ],
+                        },
+                        {
+                            title: "重新认识 C++",
+                            description: "分享 Modern C++ 的冰山一角的一角。",
+                            linkUrl: "https://slides.com/richardchien/cczu-osa-meet-cpp",
+                            humanity: [
+                                { label: "Content", value: 100 }
+                            ],
+                        },
+                        {
+                            title: "Python 和 QQ 机器人开发基础培训",
+                            description: "CCZU 开源软件协会 2019 年初寒假培训。",
+                            linkUrl: "https://www.bilibili.com/video/BV19t411679V",
+                            humanity: [
+                                { label: "Content", value: 100 }
+                            ],
+                        }
+                    ]
+                },
+                {
+                    title: "Projects",
+                    items: [
+                        {
+                            title: "PurePress",
+                            description: "A simple static blog generator.",
+                            linkUrl: "https://github.com/stdrc/purepress",
+                            humanity: [
+                                { label: "Product/UI/UX", value: 100 },
+                                { label: "Code", value: 100 },
+                            ]
+                        },
+                        {
+                            title: "NoneBot",
+                            description: "A chatbot app framework designed to be used together with CQHTTP, with advanced session state management, plugin system and easy-to-use API.",
+                            linkUrl: "https://github.com/nonebot/nonebot",
+                            humanity: [
+                                { label: "Product/UI/UX", value: 100 },
+                                { label: "Code", value: 100 },
+                            ]
+                        },
+                    ]
+                },
+                {
+                    title: "Legacy Projects",
+                    items: [
+                        {
+                            title: "CQHTTP",
+                            description: "An RPC plugin for a chatbot platform with only native APIs, to allow send/recv messages over HTTP or WebSocket, enabling developers to write chatbots easily in web-friendly languages like Python and Node.js.",
+                            linkUrl: "https://github.com/kyubotics/coolq-http-api",
+                            humanity: [
+                                { label: "Product/UI/UX", value: 100 },
+                                { label: "Code", value: 100 },
+                            ]
+                        },
+                        {
+                            title: "CoolQ C++ SDK",
+                            description: "A C++ chatbot SDK designed to provide modern C++ interfaces and elegant developer experience by utilizing features like type traits, SFINAE, smart pointers and constexpr.",
+                            linkUrl: "https://github.com/kyubotics/cqcppsdk",
+                            humanity: [
+                                { label: "Product/UI/UX", value: 100 },
+                                { label: "Code", value: 100 },
+                            ]
+                        },
+                    ]
+                },
+            ]
+        };
+
+        // 图标映射
+        const iconMap = {
+            'Product/UI/UX': 'palette',
+            'Code': 'code',
+            'Content': 'pencil'
+        };
+
+        // 创建卡片函数
+        function createCard(data) {
+            const template = document.getElementById('card-template');
+            const cardElement = template.content.cloneNode(true);
+
+            // 填充卡片内容
+            cardElement.querySelector('.card-title').textContent = data.title;
+
+            // 如果没有 description，则移除 p 元素
+            const descriptionElement = cardElement.querySelector('.card-description');
+            if (data.description && data.description.trim() !== '') {
+                descriptionElement.textContent = data.description;
+            } else {
+                descriptionElement.remove();
+            }
+
+            // 添加点击事件
+            const card = cardElement.querySelector('.card');
+            if (data.linkUrl) {
+                card.addEventListener('click', function () {
+                    window.open(data.linkUrl, '_blank');
+                });
+            } else {
+                card.style.cursor = 'default';
+            }
+
+            // 填充 Humanity 评级
+            const ratingContainer = cardElement.querySelector('.humanity-rating');
+            if (data.humanity && data.humanity.length > 0) {
+                data.humanity.forEach(item => {
+                    const humanityTemplate = document.getElementById('humanity-item-template');
+                    const humanityElement = humanityTemplate.content.cloneNode(true);
+
+                    // 设置图标
+                    const iconElement = humanityElement.querySelector('.humanity-icon');
+                    const iconName = iconMap[item.label];
+                    if (iconName) {
+                        iconElement.setAttribute('data-lucide', iconName);
+                    }
+
+                    humanityElement.querySelector('.humanity-fill').style.width = item.value + '%';
+
+                    // 设置原生 tooltip
+                    const humanityItem = humanityElement.querySelector('.humanity-item');
+                    humanityItem.setAttribute('title', item.label + ' Humanity Score: ' + item.value + '%');
+
+                    ratingContainer.appendChild(humanityElement);
+                });
+            } else {
+                // 如果没有 humanity 数据，隐藏整个评级容器
+                ratingContainer.style.display = 'none';
+            }
+
+            return cardElement;
+        }
+
+        // 创建章节函数
+        function createSection(sectionData) {
+            const template = document.getElementById('section-template');
+            const sectionElement = template.content.cloneNode(true);
+
+            // 填充章节标题
+            sectionElement.querySelector('.section-title').textContent = sectionData.title;
+
+            // 填充卡片
+            const grid = sectionElement.querySelector('.section-grid');
+            sectionData.items.forEach(item => {
+                const card = createCard(item);
+                grid.appendChild(card);
+            });
+
+            return sectionElement;
+        }
+
+        // 渲染所有章节
+        function renderSections() {
+            const container = document.getElementById('sections-container');
+            container.innerHTML = '';
+
+            portfolioData.sections.forEach(sectionData => {
+                const section = createSection(sectionData);
+                container.appendChild(section);
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            // 渲染章节
+            renderSections();
+
+            // 初始化 Lucide 图标
+            lucide.createIcons();
+        });
+    </script>
+</body>
+
+</html>
